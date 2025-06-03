@@ -8,7 +8,7 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kalender Tanam - TaniPintar</title>
-    <link rel="stylesheet" href="kalender_tanam.css">
+    <link rel="stylesheet" type="text/css" href="../css/kalender_tanam.css">
 </head>
 <body>
 
@@ -22,14 +22,14 @@ session_start();
             <li><a href="konsultasi.php">Konsultasi</a></li>
 
             <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-                <li><a href="admin.php">Admin Panel</a></li>
+                <li><a href="../page-admin/admin.php">Admin Panel</a></li>
             <?php endif; ?>
 
             <?php if (isset($_SESSION['user_id'])): ?>
-                <li><a href="profil.php">Profil</a></li>
-                <li><a href="logout.php">Logout</a></li>
+                <li><a href="../profil.php">Profil</a></li>
+                <li><a href="../logout.php">Logout</a></li>
              <?php else: ?>
-                <li><a href="login.php">Login</a></li>
+                <li><a href="../login.php">Login</a></li>
             <?php endif; ?>
         </ul>
     </nav>
@@ -46,7 +46,7 @@ session_start();
     </p>
     <p>
         Selain itu, TaniPintar juga menawarkan fitur kalender tanam yang akan membantu petani mengetahui kapan waktu terbaik untuk menanam berbagai jenis tanaman sesuai dengan musim. Fitur ini sangat penting untuk memaksimalkan hasil panen dengan menggunakan waktu yang tepat.
-    </p>
+    </p> <br>
     
     <div class="row">
         <div class="column">

@@ -7,7 +7,7 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-$user_id = $_SESSION['user_id'];
+$id_pengguna = $_SESSION['id_pengguna'];
 $field = $_POST['field'];
 $value = trim($_POST['value']);
 
@@ -21,7 +21,7 @@ if (!in_array($field, $allowed_fields)) {
 // Update data di database
 $query = "UPDATE pengguna SET $field = ? WHERE id_pengguna = ?";
 $stmt = mysqli_prepare($conn, $query);
-mysqli_stmt_bind_param($stmt, "si", $value, $user_id);
+mysqli_stmt_bind_param($stmt, "si", $value, $id_pengguna);
 
 if (mysqli_stmt_execute($stmt)) {
     echo "Perubahan berhasil disimpan!";

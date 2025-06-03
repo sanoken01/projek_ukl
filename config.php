@@ -1,14 +1,12 @@
 <?php
-$host = "localhost"; // Host database
-$user = "root"; // Username database
-$pass = ""; // Password database (kosong jika tidak ada)
-$db   = "projek_ukl"; // Nama database
+$host = 'localhost'; // atau sesuai dengan konfigurasi server kamu
+$username = 'root'; // username database
+$password = ''; // password database
+$dbname = 'projek_ukl'; // nama database
 
-// Membuat koneksi
-$conn = new mysqli($host, $user, $pass, $db);
+$conn = mysqli_connect($host, $username, $password, $dbname);
 
-// Periksa koneksi
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
+if (!$conn) {
+    die("Koneksi gagal: " . mysqli_connect_error());
 }
 ?>

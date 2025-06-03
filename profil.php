@@ -1,73 +1,68 @@
 <?php
 session_start();
-include 'config.php';
+require 'config.php'; // pastikan koneksi ke database
 
-// Pastikan user sudah login
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location:login.php");
     exit;
 }
 
 $user_id = $_SESSION['user_id'];
+$query = mysqli_query($conn, "SELECT * FROM pengguna WHERE id = '$user_id'");
+$data = mysqli_fetch_assoc($query);
 
-// Ambil data user dari database
-$query = "SELECT username, email, alamat FROM pengguna WHERE id_pengguna = ?";
-$stmt = mysqli_prepare($conn, $query);
-mysqli_stmt_bind_param($stmt, "i", $user_id);
-mysqli_stmt_execute($stmt);
-mysqli_stmt_bind_result($stmt, $username, $email, $alamat);
-mysqli_stmt_fetch($stmt);
-mysqli_stmt_close($stmt);
+// Proses update profil
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $nama = htmlspecialchars($_POST['username']);
+    $email = htmlspecialchars($_POST['email']);
+    
+    $update = mysqli_query($conn, "UPDATE pengguna SET username='$username', email='$email' WHERE id='$user_id'");
+    
+    if ($update) {
+        echo "<p style='color: green;'>Profil berhasil diperbarui!</p>";
+        // refresh data
+        $query = mysqli_query($conn, "SELECT * FROM pengguna WHERE id = '$user_id'");
+        $data = mysqli_fetch_assoc($query);
+    } else {
+        echo "<p style='color: red;'>Gagal memperbarui profil.</p>";
+    }
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil Saya</title>
-    <link rel="stylesheet" href="profil.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="css/projek_ukl.css">
 </head>
 <body>
-    <div class="container">
-        <h2>Profil Saya</h2>
-        <table class="profile-table">
-            <tr>
-                <th>Username</th>
-                <td contenteditable="true" class="editable" data-field="username"><?php echo htmlspecialchars($username); ?></td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td><?php echo htmlspecialchars($email); ?> (tidak bisa diubah)</td>
-            </tr>
-            <tr>
-                <th>Alamat</th>
-                <td contenteditable="true" class="editable" data-field="alamat"><?php echo htmlspecialchars($alamat); ?></td>
-            </tr>
-        </table>
-        <p class="info">Klik pada kolom untuk mengedit, perubahan akan tersimpan otomatis.</p>
-    </div>
 
-    <script>
-        $(document).ready(function() {
-            $(".editable").on("blur", function() {
-                var field = $(this).data("field");
-                var value = $(this).text().trim();
+<header>
+    <nav>
+        <ul>
+            <li><a href="Halaman web/projek_ukl.php">Home</a></li>
+            <li><a href="Halaman web/kalender_tanam.php">Informasi</a></li>
+            <li><a href="Halaman web/panduan.php">Panduan</a></li>
+            <li><a href="Halaman web/konsultasi.php">Konsultasi</a></li>
+            <li><a href="Halaman web/profil.php">Profil</a></li>
+            <li><a href="Halaman web/logout.php">Logout</a></li>
+        </ul>
+    </nav>
+</header>
 
-                $.ajax({
-                    url: "update_profil.php",
-                    type: "POST",
-                    data: { field: field, value: value },
-                    success: function(response) {
-                        alert(response);
-                    },
-                    error: function() {
-                        alert("Terjadi kesalahan, coba lagi!");
-                    }
-                });
-            });
-        });
-    </script>
+<main class="content">
+    <h2>Profil Saya</h2>
+    <form method="POST" action="">
+        <label>Nama:</label><br>
+        <input type="text" name="nama" value="<?= htmlspecialchars($data['username']) ?>" required><br><br>
+
+        <label>Email:</label><br>
+        <input type="email" name="email" value="<?= htmlspecialchars($data['email']) ?>" required><br><br>
+
+        <button type="submit">Simpan Perubahan</button>
+    </form>
+</main>
+
 </body>
 </html>
