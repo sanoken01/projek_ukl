@@ -24,7 +24,7 @@ if (isset($_POST['login'])) {
             $_SESSION['username'] = $user['username'];
             $_SESSION['role'] = $user['role'];
 
-            header("Location: Halaman web/projek_ukl.php");
+            header("Location: Halaman_web/projek_ukl.php");
             exit;
         } else {
             $error = "Email atau Password salah!";
@@ -51,7 +51,7 @@ if (isset($_POST['login'])) {
             <input type="password" name="password" placeholder="Password" required>
             <button type="submit" name="login">Login</button>
             <p>Belum punya akun? <a href="register.php">Register di sini</a></p>
-            <a href="halaman web/projek_ukl.php" class="home-icon"><i class="fa fa-home"></i></a>
+            <a href="halaman_web/projek_ukl.php" class="home-icon"><i class="fa fa-home"></i></a>
         </form>
     </div>
     

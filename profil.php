@@ -1,30 +1,43 @@
 <?php
 session_start();
-require 'config.php'; // pastikan koneksi ke database
+$conn = new mysqli("localhost", "root", "", "projek_ukl");
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location:login.php");
+    header("Location: login.php");
     exit;
 }
 
-$user_id = $_SESSION['user_id'];
-$query = mysqli_query($conn, "SELECT * FROM pengguna WHERE id = '$user_id'");
-$data = mysqli_fetch_assoc($query);
+$id = $_SESSION['user_id'];
+$role = $_SESSION['role'];
 
-// Proses update profil
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $nama = htmlspecialchars($_POST['username']);
-    $email = htmlspecialchars($_POST['email']);
-    
-    $update = mysqli_query($conn, "UPDATE pengguna SET username='$username', email='$email' WHERE id='$user_id'");
-    
-    if ($update) {
-        echo "<p style='color: green;'>Profil berhasil diperbarui!</p>";
-        // refresh data
-        $query = mysqli_query($conn, "SELECT * FROM pengguna WHERE id = '$user_id'");
-        $data = mysqli_fetch_assoc($query);
-    } else {
-        echo "<p style='color: red;'>Gagal memperbarui profil.</p>";
+// Ambil data pengguna
+$user = $conn->query("SELECT * FROM pengguna WHERE id_pengguna = $id")->fetch_assoc();
+
+// Ambil data konsultan jika role konsultan
+$konsultan = null;
+if ($role === 'konsultan') {
+    $konsultan = $conn->query("SELECT * FROM konsultan WHERE id_pengguna = $id")->fetch_assoc();
+}
+
+// Proses update
+$update_success = false;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $new_username = $conn->real_escape_string($_POST['username']);
+    $new_password = !empty($_POST['password']) ? password_hash($_POST['password'], PASSWORD_DEFAULT) : null;
+
+    $conn->query("UPDATE pengguna SET username = '$new_username' " . 
+        ($new_password ? ", password = '$new_password'" : "") . 
+        " WHERE id_pengguna = $id");
+
+    if ($role === 'konsultan' && isset($_POST['keahlian'])) {
+        $new_keahlian = $conn->real_escape_string($_POST['keahlian']);
+        $conn->query("UPDATE konsultan SET keahlian = '$new_keahlian' WHERE id_pengguna = $id");
+    }
+
+    $update_success = true;
+    $user = $conn->query("SELECT * FROM pengguna WHERE id_pengguna = $id")->fetch_assoc();
+    if ($role === 'konsultan') {
+        $konsultan = $conn->query("SELECT * FROM konsultan WHERE id_pengguna = $id")->fetch_assoc();
     }
 }
 ?>
@@ -34,35 +47,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Profil Saya</title>
-    <link rel="stylesheet" href="css/projek_ukl.css">
+    <link rel="stylesheet" href="css/profil.css">
 </head>
 <body>
 
-<header>
-    <nav>
-        <ul>
-            <li><a href="Halaman web/projek_ukl.php">Home</a></li>
-            <li><a href="Halaman web/kalender_tanam.php">Informasi</a></li>
-            <li><a href="Halaman web/panduan.php">Panduan</a></li>
-            <li><a href="Halaman web/konsultasi.php">Konsultasi</a></li>
-            <li><a href="Halaman web/profil.php">Profil</a></li>
-            <li><a href="Halaman web/logout.php">Logout</a></li>
-        </ul>
-    </nav>
-</header>
-
-<main class="content">
+<div class="profil-container">
     <h2>Profil Saya</h2>
-    <form method="POST" action="">
-        <label>Nama:</label><br>
-        <input type="text" name="nama" value="<?= htmlspecialchars($data['username']) ?>" required><br><br>
 
-        <label>Email:</label><br>
-        <input type="email" name="email" value="<?= htmlspecialchars($data['email']) ?>" required><br><br>
+    <?php if ($update_success): ?>
+        <div class="success-msg">✔️ Profil berhasil diperbarui.</div>
+    <?php endif; ?>
 
-        <button type="submit">Simpan Perubahan</button>
+    <form method="POST">
+        <label>Username</label>
+        <input type="text" name="username" value="<?= htmlspecialchars($user['username']) ?>" required>
+
+        <label>Email</label>
+        <input type="text" value="<?= htmlspecialchars($user['email']) ?>" readonly>
+
+        <?php if ($role === 'user'): ?>
+            <label>Alamat</label>
+            <input type="text" value="<?= htmlspecialchars($user['alamat']) ?>" readonly>
+        <?php endif; ?>
+
+        <?php if ($role === 'konsultan' && $konsultan): ?>
+            <label>Keahlian</label>
+            <input type="text" name="keahlian" value="<?= htmlspecialchars($konsultan['keahlian']) ?>" required>
+        <?php endif; ?>
+
+        <label>Password Baru (opsional)</label>
+        <input type="password" name="password" placeholder="Biarkan kosong jika tidak ingin diubah">
+
+        <div class="btn-group">
+            <button type="submit">Simpan Perubahan</button>
+            <a href="Halaman_web/projek_ukl.php" class="btn">Kembali</a>
+        </div>
     </form>
-</main>
+</div>
 
 </body>
 </html>

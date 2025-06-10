@@ -4,40 +4,36 @@ include 'config.php';
 
 if (isset($_POST['register'])) {
     $username = trim($_POST['username']);
-    $email = trim($_POST['email']);
+    $email    = trim($_POST['email']);
     $password = trim($_POST['password']);
-    $alamat = trim($_POST['alamat']);
-    $role = "user"; // Default role
+    $alamat   = trim($_POST['alamat']);
+    $role     = isset($_POST['konsultan']) ? 'konsultan' : 'user';
+    $keahlian = isset($_POST['keahlian']) ? trim($_POST['keahlian']) : null;
 
-    // Cek jika field kosong
     if ($username && $email && $password && $alamat) {
-        // Cek apakah email sudah terdaftar
-        $check_query = "SELECT id_pengguna FROM pengguna WHERE email = ?";
-        $stmt = mysqli_prepare($conn, $check_query);
-        mysqli_stmt_bind_param($stmt, "s", $email);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-
-        if (mysqli_num_rows($result) > 0) {
+        $cek = mysqli_query($conn, "SELECT id_pengguna FROM pengguna WHERE email = '$email'");
+        if (mysqli_num_rows($cek) > 0) {
             echo "<script>alert('Email sudah terdaftar!');</script>";
         } else {
-            // Hash password dan insert data ke database
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            $query = "INSERT INTO pengguna (username, email, password, alamat, role) VALUES (?, ?, ?, ?, ?)";
-            $stmt = mysqli_prepare($conn, $query);
-            mysqli_stmt_bind_param($stmt, "sssss", $username, $email, $hashed_password, $alamat, $role);
+            // Insert pengguna
+            mysqli_query($conn, "INSERT INTO pengguna (username, email, password, alamat, role) 
+                                 VALUES ('$username', '$email', '$password', '$alamat', '$role')");
 
-            if (mysqli_stmt_execute($stmt)) {
-                $_SESSION['user_id'] = mysqli_insert_id($conn);
-                $_SESSION['username'] = $username;
-                $_SESSION['email'] = $email;
-                $_SESSION['role'] = $role;
+            $id_pengguna = mysqli_insert_id($conn);
 
-                echo "<script>alert('Pendaftaran berhasil!'); window.location='Halaman web/projek_ukl.php';</script>";
-                exit;
-            } else {
-                echo "<script>alert('Pendaftaran gagal: " . mysqli_error($conn) . "');</script>";
+            // Insert ke konsultan jika role konsultan
+            if ($role == 'konsultan' && $keahlian) {
+                mysqli_query($conn, "INSERT INTO konsultan (id_pengguna, keahlian) 
+                                     VALUES ('$id_pengguna', '$keahlian')");
             }
+
+            $_SESSION['user_id'] = $id_pengguna;
+            $_SESSION['username'] = $username;
+            $_SESSION['email'] = $email;
+            $_SESSION['role'] = $role;
+
+            echo "<script>alert('Pendaftaran berhasil!'); window.location='Halaman_web/projek_ukl.php';</script>";
+            exit;
         }
     } else {
         echo "<script>alert('Semua field harus diisi!');</script>";
@@ -62,10 +58,24 @@ if (isset($_POST['register'])) {
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
             <input type="text" name="alamat" placeholder="Alamat" required>
+
+            <label>
+                <input type="checkbox" name="konsultan" id="konsultanCheckbox" onchange="toggleKeahlian()"> Daftar sebagai Konsultan
+            </label>
+            <input type="text" name="keahlian" id="keahlianInput" placeholder="Keahlian Konsultan" style="display:none;">
+
             <button type="submit" name="register">Register</button>
             <p>Sudah punya akun? <a href="login.php">Login di sini</a></p>
-            <a href="Halaman web/projek_ukl.php" class="home-icon"><i class="fa fa-home"></i></a>
+            <a href="Halaman_web/projek_ukl.php" class="home-icon"><i class="fa fa-home"></i></a>
         </form>
+
+        <script>
+        function toggleKeahlian() {
+            document.getElementById('keahlianInput').style.display =
+                document.getElementById('konsultanCheckbox').checked ? 'block' : 'none';
+        }
+        </script>
+
     </div>
 </body>
 </html>

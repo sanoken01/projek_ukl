@@ -70,10 +70,25 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Responsiveness */
-@media (max-width: 480px) {
-    div {
-        width: 90%;
-        padding: 20px;
-    }
+
+/*--untuk tambah crud---*/
+select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+    background-color: white;
+    color: #333;
+    appearance: none; /* hilangkan default arrow di beberapa browser */
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%23ff5252' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px;
+}
+
+option {
+    font-size: 16px;
 }

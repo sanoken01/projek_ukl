@@ -1,214 +1,145 @@
-/* Reset dan font */
 body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #2C3E50; /* latar utama */
-    color: #ffffff;
-  }
-  
-  /* Container Flex Layout */
-  .container {
-    display: flex;
-    min-height: 100vh;
-  }
-  
-  /* Sidebar */
-  .sidebar {
-    width: 250px;
-    background-color: #34495e;
-    padding: 20px;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.5);
-  }
-  
-  .sidebar .logo img {
-    width: 100%;
-    margin-bottom: 30px;
-  }
-  
-  /* Sidebar menu item */
-  .sidebar ul li a {
-    display: block;
-    padding: 10px 15px;
-    color: #ecf0f1;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-  }
-  
-  /* Hover effect */
-  .sidebar ul li a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #fff;
-  }
-  
-  /* Aktif */
-  .sidebar ul li a.active {
-    background-color: rgba(255, 255, 255, 0.2);
-    color: #fff;
-    font-weight: bold;
-    border-left: 4px solid #ffffff;
-  }
-  
-  /* Main Content */
-  .main-content {
-    flex: 1;
-    padding: 30px;
-  }
-  
-  h1 {
-    color: #ffffff;
-  }
-  
-  /* Tombol Toggle */
-  .toggle-btn {
-    background-color: #1f3a4d;
-    color: #fff;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 10px 15px;
-    margin-bottom: 20px;
-  }
-  
-  /* Tombol Tambah/Edit/Hapus */
-  .add-btn, .edit-btn, .delete-btn {
-    border: none;
-    padding: 8px 12px;
-    cursor: pointer;
-    margin-right: 5px;
-    border-radius: 4px;
-    text-decoration: none;
-  }
-  
-  .add-btn {
-    background-color: #27ae60;
-    color: #fff;
-  }
-  
-  .edit-btn {
-    background-color: #2980b9;
-    color: #fff;
-  }
-  
-  .delete-btn {
-    background-color: #c0392b;
-    color: #fff;
-  }
-  
-  .icon-btn {
-    text-decoration: none;
-    font-size: 18px;
-    margin-right: 10px;
-    color: #fff;
-    padding: 6px 10px;
-    background-color: #34495e;
-    border-radius: 6px;
-    display: inline-block;
-    transition: background-color 0.2s ease;
-  }
-  
-  .icon-btn:hover {
-    background-color: #2980b9;
-  }
-  
-  .icon-btn.delete {
-    background-color: #e74c3c;
-  }
-  
-  .icon-btn.delete:hover {
-    background-color: #c0392b;
-  }
-  
-  /* Tabel */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    background-color: #3b5770;
-    color: #ffffff;
-  }
-  
-  th, td {
-    padding: 12px 15px;
-    border-bottom: 1px solid #2C3E50;
-    text-align: left;
-  }
-  
-  th {
-    background-color: #34495e;
-  }
-  
-  /* Hidden sidebar */
-  .sidebar.hidden {
-    display: none;
-  }
-  
-  /* Form Tambah & Edit */
-  form {
-    max-width: 400px;
-    margin: 40px auto;
-    background-color: #34495e;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
-  }
-  
-  form input[type="text"],
-  form input[type="email"],
-  form input[type="password"] {
-    width: 100%;
-    padding: 12px 6px;
-    margin: 20px 0;
-    border: none;
-    border-radius: 6px;
-    background-color: #3b5770;
-    color: white;
-    font-size: 15px;
-  }
-  
-  form input[type="text"]::placeholder,
-  form input[type="email"]::placeholder, 
-  form input[type="password"]::placeholder {
-    color: #bdc3c7;
-  }
-  
-  form button[type="submit"] {
-    width: 100%;
-    background-color: #27ae60;
-    border: none;
-    color: white;
-    padding: 12px;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-  
-  form button[type="submit"]:hover {
-    background-color: #219150;
-  }
-  
-  /* Link Back (optional) */
-  .back-link {
-    display: block;
-    text-align: center;
-    margin-top: 20px;
-    color: #ecf0f1;
-    text-decoration: none;
-  }
-  
-  .back-link:hover {
-    text-decoration: underline;
-  }
-  
-  /* Responsive */
-  @media (max-width: 768px) {
-    .container {
-      flex-direction: column;
-    }
-  
-    .main-content {
-      width: 100%;
-    }
-  }
-  
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #ffffff; /* Ganti dari #2C3E50 ke putih */
+  color: #2C3E50; /* Teks utama biru tua */
+}
+
+/* Container Flex Layout */
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar (tidak diubah) */
+.sidebar {
+  width: 250px;
+  background-color: #34495e;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.5);
+}
+
+.sidebar .logo img {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+/* Sidebar menu item */
+.sidebar ul li a {
+  display: block;
+  padding: 10px 15px;
+  color: #ecf0f1;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.sidebar ul li a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.sidebar ul li a.active {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-weight: bold;
+  border-left: 4px solid #ffffff;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  padding: 30px;
+  background-color: #ffffff; /* Putih bersih */
+}
+
+h1 {
+  color: #2C3E50;
+}
+
+/* Tombol Toggle */
+.toggle-btn {
+  background-color: #2C3E50;
+  color: #fff;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+}
+
+/* Tombol Tambah/Edit/Hapus */
+.add-btn {
+  display: inline-block;
+  background-color: #ff5252;     /* Merah */
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  margin-bottom: 15px;
+  transition: background-color 0.3s ease;
+}
+
+.edit-btn {
+  background-color: #2C3E50;
+  color: #fff;
+}
+
+.delete-btn {
+  background-color: #c0392b;
+  color: #fff;
+}
+
+/* Tombol Ikon */
+.icon-btn {
+  text-decoration: none;
+  font-size: 18px;
+  margin-right: 10px;
+  color: #fff;
+  padding: 6px 10px;
+  background-color: #2C3E50;
+  border-radius: 6px;
+  display: inline-block;
+  transition: background-color 0.2s ease;
+}
+
+.icon-btn:hover {
+  background-color: #ff5252;
+}
+
+.icon-btn.delete {
+  background-color: #ff5252;
+}
+
+.icon-btn.delete:hover {
+  background-color: #c0392b;
+}
+
+/* Tabel */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #ffffff;
+  color: #2C3E50;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+th, td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+th {
+  background-color: #2C3E50;
+  color: #ffffff;
+}
+
+/* Sidebar hidden (biarkan default) */
+.sidebar.hidden {
+  display: none;
+}
